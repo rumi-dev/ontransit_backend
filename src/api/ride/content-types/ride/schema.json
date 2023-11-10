@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rides",
+  "info": {
+    "singularName": "ride",
+    "pluralName": "rides",
+    "displayName": "ride",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "pickup_point": {
+      "type": "text"
+    },
+    "drop_point": {
+      "type": "text"
+    },
+    "driver": {
+      "type": "string"
+    },
+    "customer": {
+      "type": "string"
+    },
+    "ride_status": {
+      "type": "string"
+    },
+    "ride_cost": {
+      "type": "decimal"
+    },
+    "ride_datetime": {
+      "type": "datetime"
+    },
+    "payment_status": {
+      "type": "string"
+    },
+    "ride_otp": {
+      "type": "biginteger"
+    },
+    "car": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::car.car"
+    }
+  }
+}
