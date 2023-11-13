@@ -362,6 +362,61 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiCarCar extends Schema.CollectionType {
+  collectionName: 'cars';
+  info: {
+    singularName: 'car';
+    pluralName: 'cars';
+    displayName: 'car';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    car_type: Attribute.String & Attribute.Unique;
+    car_number: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::car.car', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::car.car', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiRideRide extends Schema.CollectionType {
+  collectionName: 'rides';
+  info: {
+    singularName: 'ride';
+    pluralName: 'rides';
+    displayName: 'ride';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    pickup_point: Attribute.Text;
+    drop_point: Attribute.Text;
+    driver: Attribute.String;
+    customer: Attribute.String;
+    ride_status: Attribute.String;
+    ride_cost: Attribute.Decimal;
+    ride_datetime: Attribute.DateTime;
+    payment_status: Attribute.String;
+    ride_otp: Attribute.BigInteger;
+    car: Attribute.Relation<'api::ride.ride', 'oneToOne', 'api::car.car'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::ride.ride', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::ride.ride', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -631,7 +686,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -660,157 +714,30 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiCarCar extends Schema.CollectionType {
-  collectionName: 'cars';
-  info: {
-    singularName: 'car';
-    pluralName: 'cars';
-    displayName: 'car';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    car_type: Attribute.String & Attribute.Unique;
-    car_number: Attribute.String & Attribute.Unique;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::car.car', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::car.car', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
-export interface ApiCustomerCustomer extends Schema.CollectionType {
-  collectionName: 'customers';
-  info: {
-    singularName: 'customer';
-    pluralName: 'customers';
-    displayName: 'customer';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    email: Attribute.Email & Attribute.Unique;
-    phone: Attribute.BigInteger & Attribute.Unique;
-    password: Attribute.Password;
+    drivingLicense: Attribute.String & Attribute.Unique;
     cars: Attribute.Relation<
-      'api::customer.customer',
+      'plugin::users-permissions.user',
       'oneToMany',
       'api::car.car'
     >;
     rides: Attribute.Relation<
-      'api::customer.customer',
+      'plugin::users-permissions.user',
       'oneToMany',
       'api::ride.ride'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::customer.customer',
+      'plugin::users-permissions.user',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::customer.customer',
+      'plugin::users-permissions.user',
       'oneToOne',
       'admin::user'
     > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiDriverDriver extends Schema.CollectionType {
-  collectionName: 'drivers';
-  info: {
-    singularName: 'driver';
-    pluralName: 'drivers';
-    displayName: 'driver';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    email: Attribute.Email & Attribute.Unique;
-    phone: Attribute.BigInteger & Attribute.Unique;
-    drivingLicense: Attribute.String & Attribute.Unique;
-    password: Attribute.Password & Attribute.Required;
-    rides: Attribute.Relation<
-      'api::driver.driver',
-      'oneToMany',
-      'api::ride.ride'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::driver.driver',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::driver.driver',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiRideRide extends Schema.CollectionType {
-  collectionName: 'rides';
-  info: {
-    singularName: 'ride';
-    pluralName: 'rides';
-    displayName: 'ride';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    pickup_point: Attribute.Text;
-    drop_point: Attribute.Text;
-    driver: Attribute.String;
-    customer: Attribute.String;
-    ride_status: Attribute.String;
-    ride_cost: Attribute.Decimal;
-    ride_datetime: Attribute.DateTime;
-    payment_status: Attribute.String;
-    ride_otp: Attribute.BigInteger;
-    car: Attribute.Relation<'api::ride.ride', 'oneToOne', 'api::car.car'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::ride.ride', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::ride.ride', 'oneToOne', 'admin::user'> &
       Attribute.Private;
   };
 }
@@ -825,16 +752,14 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::car.car': ApiCarCar;
+      'api::ride.ride': ApiRideRide;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'api::car.car': ApiCarCar;
-      'api::customer.customer': ApiCustomerCustomer;
-      'api::driver.driver': ApiDriverDriver;
-      'api::ride.ride': ApiRideRide;
     }
   }
 }
