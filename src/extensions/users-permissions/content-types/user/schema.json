@@ -78,6 +78,10 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::ride.ride"
+    },
+    "phone": {
+      "type": "biginteger",
+      "unique": true
     }
   }
 }
