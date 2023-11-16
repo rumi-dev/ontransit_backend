@@ -18,23 +18,11 @@
     "drop_point": {
       "type": "text"
     },
-    "driver": {
-      "type": "string"
-    },
-    "customer": {
-      "type": "string"
-    },
-    "ride_status": {
-      "type": "string"
-    },
     "ride_cost": {
       "type": "decimal"
     },
     "ride_datetime": {
       "type": "datetime"
-    },
-    "payment_status": {
-      "type": "string"
     },
     "ride_otp": {
       "type": "biginteger"
@@ -43,6 +31,28 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::car.car"
+    },
+    "ride_status": {
+      "type": "enumeration",
+      "enum": [
+        "Ongoing",
+        "Completed",
+        "Cancelled"
+      ]
+    },
+    "payment_mode": {
+      "type": "enumeration",
+      "enum": [
+        "Cash",
+        "Card"
+      ]
+    },
+    "payment_status": {
+      "type": "enumeration",
+      "enum": [
+        "paid",
+        "yet_to_pay"
+      ]
     }
   }
 }

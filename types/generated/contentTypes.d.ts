@@ -399,14 +399,13 @@ export interface ApiRideRide extends Schema.CollectionType {
   attributes: {
     pickup_point: Attribute.Text;
     drop_point: Attribute.Text;
-    driver: Attribute.String;
-    customer: Attribute.String;
-    ride_status: Attribute.String;
     ride_cost: Attribute.Decimal;
     ride_datetime: Attribute.DateTime;
-    payment_status: Attribute.String;
     ride_otp: Attribute.BigInteger;
     car: Attribute.Relation<'api::ride.ride', 'oneToOne', 'api::car.car'>;
+    ride_status: Attribute.Enumeration<['Ongoing', 'Completed', 'Cancelled']>;
+    payment_mode: Attribute.Enumeration<['Cash', 'Card']>;
+    payment_status: Attribute.Enumeration<['paid', 'yet_to_pay']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
