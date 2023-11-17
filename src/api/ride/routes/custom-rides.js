@@ -8,5 +8,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/getRideList",
+      handler: "ride.getRideList",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };
