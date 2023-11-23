@@ -16,5 +16,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/userRolesList",
+      handler: "ride.userRolesList",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };

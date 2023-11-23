@@ -47,4 +47,15 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
 
     return { rides: rideData, user: userData };
   },
+  async userRolesList(ctx) {
+    // @ts-ignore
+    const { role } = ctx.request.body;
+    console.log("role", role);
+    const users = await strapi.db
+      .query("plugin::users-permissions.user")
+      .findMany({ populate: ["role"] });
+    const filteredRole = users.filter((u) => u.role.name == role);
+    console.log(filteredRole);
+    return { count: filteredRole.length };
+  },
 }));
