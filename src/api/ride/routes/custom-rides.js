@@ -24,5 +24,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/bookingDetails",
+      handler: "ride.bookingDetails",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };

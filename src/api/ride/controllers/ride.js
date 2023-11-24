@@ -50,12 +50,50 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
   async userRolesList(ctx) {
     // @ts-ignore
     const { role } = ctx.request.body;
-    console.log("role", role);
     const users = await strapi.db
       .query("plugin::users-permissions.user")
       .findMany({ populate: ["role"] });
     const filteredRole = users.filter((u) => u.role.name == role);
-    console.log(filteredRole);
     return { count: filteredRole.length };
+  },
+  async bookingDetails(ctx) {
+    // @ts-ignore
+    const { ride_status } = ctx.request.body;
+    const rides = await strapi.db.query("api::ride.ride").findMany({
+      where: { ride_status: ride_status },
+      orderBy: { id: "desc" },
+      populate: ["car"],
+    });
+    const users = Promise.all(
+      rides.map(async (ride) => {
+        console.log(ride);
+        let userRides = await strapi.db
+          .query("plugin::users-permissions.user")
+          .findMany({ where: { rides: ride.id }, populate: ["role"] });
+        let cusomterName = userRides.filter(
+          (userRide) => userRide.role.name == "ontransit_customer"
+        );
+        console.log(userRides);
+        let driverName = userRides.filter(
+          (userRide) => userRide.role.name == "ontransit_driver"
+        );
+
+        return {
+          pickupPoint: ride.pickup_point,
+          dropPoint: ride.drop_point,
+          servicePerson: driverName[0].username,
+          customerName: cusomterName[0].username,
+          payment: ride.payment_status,
+          paymentCost: ride.ride_cost,
+          dateTime: ride.ride,
+          carType: ride.car.car_type,
+          vechicleNumber: ride.car.car_number,
+          status: ride.ride_status,
+          otp: ride.ride_otp,
+          paymentType: ride.ride_payment_mode,
+        };
+      })
+    );
+    return users;
   },
 }));
