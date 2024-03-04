@@ -59,6 +59,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
   async bookingDetails(ctx) {
     // @ts-ignore
     const { ride_status } = ctx.request.body;
+    console.log("ride_status", ride_status);
     const rides = await strapi.db.query("api::ride.ride").findMany({
       where: { ride_status: ride_status },
       orderBy: { id: "desc" },
