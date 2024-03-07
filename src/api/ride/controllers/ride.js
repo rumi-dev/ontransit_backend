@@ -59,7 +59,6 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
   async bookingDetails(ctx) {
     // @ts-ignore
     const { ride_status } = ctx.request.body;
-    console.log("ride_status", ride_status);
     const rides = await strapi.db.query("api::ride.ride").findMany({
       where: { ride_status: ride_status },
       orderBy: { id: "desc" },
@@ -78,7 +77,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
         let driverName = userRides.filter(
           (userRide) => userRide.role.name == "ontransit_driver"
         );
-
+        console.log(ride);
         return {
           pickupPoint: ride.pickup_point,
           dropPoint: ride.drop_point,
@@ -86,7 +85,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
           customerName: cusomterName[0].username,
           payment: ride.payment_status,
           paymentCost: ride.ride_cost,
-          dateTime: ride.ride,
+          dateTime: ride.ride_datetime,
           carType: ride.car.car_type,
           vechicleNumber: ride.car.car_number,
           status: ride.ride_status,
