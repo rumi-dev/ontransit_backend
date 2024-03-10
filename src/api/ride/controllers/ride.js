@@ -77,8 +77,8 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
         let driverName = userRides.filter(
           (userRide) => userRide.role.name == "ontransit_driver"
         );
-        console.log(ride);
         return {
+          rideId: ride.id,
           pickupPoint: ride.pickup_point,
           dropPoint: ride.drop_point,
           servicePerson: driverName[0].username,
