@@ -2,7 +2,7 @@ module.exports = {
   routes: [
     {
       method: "POST",
-      path: "/getUsersList",
+      path: "/rides/getUsersList",
       handler: "ride.getUsersList",
       config: {
         auth: false,

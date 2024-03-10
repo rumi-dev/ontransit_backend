@@ -77,15 +77,15 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
         let driverName = userRides.filter(
           (userRide) => userRide.role.name == "ontransit_driver"
         );
-
         return {
+          rideId: ride.id,
           pickupPoint: ride.pickup_point,
           dropPoint: ride.drop_point,
           servicePerson: driverName[0].username,
           customerName: cusomterName[0].username,
           payment: ride.payment_status,
           paymentCost: ride.ride_cost,
-          dateTime: ride.ride,
+          dateTime: ride.ride_datetime,
           carType: ride.car.car_type,
           vechicleNumber: ride.car.car_number,
           status: ride.ride_status,
