@@ -725,6 +725,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::ride.ride'
     >;
     phone: Attribute.BigInteger & Attribute.Unique;
+    user_type: Attribute.Enumeration<['driver', 'customer', 'admin']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

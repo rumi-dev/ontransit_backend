@@ -82,6 +82,14 @@
     "phone": {
       "type": "biginteger",
       "unique": true
+    },
+    "user_type": {
+      "type": "enumeration",
+      "enum": [
+        "driver",
+        "customer",
+        "admin"
+      ]
     }
   }
 }
