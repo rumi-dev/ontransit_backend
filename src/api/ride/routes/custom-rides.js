@@ -32,5 +32,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/cancelBooking",
+      handler: "ride.cancelBooking",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };

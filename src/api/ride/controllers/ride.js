@@ -96,4 +96,14 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
     );
     return users;
   },
+  async cancelBooking(ctx) {
+    // @ts-ignore
+    const { ride_id } = ctx.request.body;
+    const entry = await strapi.entityService.update("api::ride.ride", ride_id, {
+      data: {
+        ride_status: "Cancelled",
+      },
+    });
+    return "Ride has been cancelled successfully";
+  },
 }));
