@@ -106,4 +106,73 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
     });
     return "Ride has been cancelled successfully";
   },
+  async commonBookings(ctx) {
+    // @ts-ignore
+    const { ride_status, user_id } = ctx.request.body;
+    let userRides = await strapi.db
+      .query("plugin::users-permissions.user")
+      .findMany({
+        where: { id: user_id },
+        populate: ["rides"],
+      });
+
+    console.log(userRides);
+    let rideDetails = userRides[0].rides.map((ride) => {
+      if (ride.ride_status == ride_status) {
+        return ride;
+      }
+    });
+    rideDetails = rideDetails.filter((ride) => ride !== undefined);
+    let customerRides = Promise.all(
+      rideDetails.map(async (ride) => {
+        let ride_details = await strapi.db
+          .query("plugin::users-permissions.user")
+          .findMany({
+            where: { rides: ride.id },
+            populate: ["role"],
+          });
+        let cusomterName = ride_details.filter(
+          (userRide) => userRide.role.name == "ontransit_customer"
+        );
+        let driverName = ride_details.filter(
+          (userRide) => userRide.role.name == "ontransit_driver"
+        );
+        let carDetails = await strapi.db
+          .query("api::ride.ride")
+          .findOne({ where: { id: ride.id }, populate: ["car"] });
+        console.log("123");
+        console.log({
+          rideId: ride.id,
+          pickupPoint: ride.pickup_point,
+          dropPoint: ride.drop_point,
+          servicePerson: driverName[0].username,
+          customerName: cusomterName[0].username,
+          payment: ride.payment_status,
+          paymentCost: ride.ride_cost,
+          dateTime: ride.ride_datetime,
+          carType: carDetails.car_type,
+          vechicleNumber: carDetails.car_number,
+          status: ride.ride_status,
+          otp: ride.ride_otp,
+          paymentType: ride.ride_payment_mode,
+        });
+        return {
+          rideId: ride.id,
+          pickupPoint: ride.pickup_point,
+          dropPoint: ride.drop_point,
+          servicePerson: driverName[0].username,
+          customerName: cusomterName[0].username,
+          payment: ride.payment_status,
+          paymentCost: ride.ride_cost,
+          dateTime: ride.ride_datetime,
+          carType: carDetails.car_type,
+          vechicleNumber: carDetails.car_number,
+          status: ride.ride_status,
+          otp: ride.ride_otp,
+          paymentType: ride.ride_payment_mode,
+        };
+      })
+    );
+    return customerRides;
+  },
 }));

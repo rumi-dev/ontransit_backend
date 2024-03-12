@@ -40,5 +40,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/commonBookings",
+      handler: "ride.commonBookings",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };
