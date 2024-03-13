@@ -140,6 +140,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
         let carDetails = await strapi.db
           .query("api::ride.ride")
           .findOne({ where: { id: ride.id }, populate: ["car"] });
+        console.log(carDetails);
         console.log("123");
         console.log({
           rideId: ride.id,
@@ -150,8 +151,8 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
           payment: ride.payment_status,
           paymentCost: ride.ride_cost,
           dateTime: ride.ride_datetime,
-          carType: carDetails.car_type,
-          vechicleNumber: carDetails.car_number,
+          carType: carDetails.car.car_type,
+          vechicleNumber: carDetails.car.car_number,
           status: ride.ride_status,
           otp: ride.ride_otp,
           paymentType: ride.ride_payment_mode,
@@ -165,8 +166,8 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
           payment: ride.payment_status,
           paymentCost: ride.ride_cost,
           dateTime: ride.ride_datetime,
-          carType: carDetails.car_type,
-          vechicleNumber: carDetails.car_number,
+          carType: carDetails.car.car_type,
+          vechicleNumber: carDetails.car.car_number,
           status: ride.ride_status,
           otp: ride.ride_otp,
           paymentType: ride.ride_payment_mode,
