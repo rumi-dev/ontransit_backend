@@ -53,6 +53,12 @@
         "paid",
         "yet_to_pay"
       ]
+    },
+    "servicePerson": {
+      "type": "string"
+    },
+    "customer": {
+      "type": "string"
     }
   }
 }
