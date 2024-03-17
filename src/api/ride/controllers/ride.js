@@ -58,22 +58,23 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
   },
   async bookingDetails(ctx) {
     // @ts-ignore
-    const { ride_status } = ctx.request.body;
+    const { ride_status, pageNo } = ctx.request.body;
+    let offset = pageNo * 10 - 10;
     const rides = await strapi.db.query("api::ride.ride").findMany({
+      limit: 10,
+      offset: offset,
       where: { ride_status: ride_status },
       orderBy: { id: "desc" },
       populate: ["car"],
     });
     const users = Promise.all(
       rides.map(async (ride) => {
-        console.log(ride);
         let userRides = await strapi.db
           .query("plugin::users-permissions.user")
           .findMany({ where: { rides: ride.id }, populate: ["role"] });
         let cusomterName = userRides.filter(
           (userRide) => userRide.role.name == "ontransit_customer"
         );
-        console.log(userRides);
         let driverName = userRides.filter(
           (userRide) => userRide.role.name == "ontransit_driver"
         );
@@ -108,10 +109,13 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
   },
   async commonBookings(ctx) {
     // @ts-ignore
-    const { ride_status, user_id } = ctx.request.body;
+    const { ride_status, user_id, pageNo } = ctx.request.body;
+    let offset = pageNo * 10 - 10;
     let userRides = await strapi.db
       .query("plugin::users-permissions.user")
       .findMany({
+        limit: 10,
+        offset: offset,
         where: { id: user_id },
         populate: ["rides"],
       });
@@ -140,23 +144,6 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
         let carDetails = await strapi.db
           .query("api::ride.ride")
           .findOne({ where: { id: ride.id }, populate: ["car"] });
-        console.log(carDetails);
-        console.log("123");
-        console.log({
-          rideId: ride.id,
-          pickupPoint: ride.pickup_point,
-          dropPoint: ride.drop_point,
-          servicePerson: driverName[0].username,
-          customerName: cusomterName[0].username,
-          payment: ride.payment_status,
-          paymentCost: ride.ride_cost,
-          dateTime: ride.ride_datetime,
-          carType: carDetails.car.car_type,
-          vechicleNumber: carDetails.car.car_number,
-          status: ride.ride_status,
-          otp: ride.ride_otp,
-          paymentType: ride.ride_payment_mode,
-        });
         return {
           rideId: ride.id,
           pickupPoint: ride.pickup_point,
