@@ -10,10 +10,13 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
   async getUsersList(ctx) {
     try {
       // @ts-ignore
-      const { role } = ctx.request.body;
+      const { role, pageNo } = ctx.request.body;
+      let offset = pageNo * 10 - 10;
       const data = await strapi.db
         .query("plugin::users-permissions.user")
         .findMany({
+          limit: 10,
+          offset: offset,
           orderBy: { id: "desc" },
           populate: ["role", "rides"],
         });
