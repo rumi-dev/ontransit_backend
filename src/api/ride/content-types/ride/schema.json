@@ -54,11 +54,15 @@
         "yet_to_pay"
       ]
     },
-    "servicePerson": {
-      "type": "string"
-    },
     "customer": {
-      "type": "string"
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "admin::user"
+    },
+    "service_person": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "admin::user"
     }
   }
 }

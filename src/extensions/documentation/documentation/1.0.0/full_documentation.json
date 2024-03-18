@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-03-18T02:17:53.042Z"
+    "x-generation-date": "2024-03-18T02:24:38.712Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -543,11 +543,27 @@
                   "yet_to_pay"
                 ]
               },
-              "servicePerson": {
-                "type": "string"
-              },
               "customer": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "example": "string or id"
+              },
+              "service_person": {
+                "oneOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "example": "string or id"
               }
             }
           }
@@ -965,11 +981,39 @@
               "yet_to_pay"
             ]
           },
-          "servicePerson": {
-            "type": "string"
-          },
           "customer": {
-            "type": "string"
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "attributes": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            }
+          },
+          "service_person": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "attributes": {
+                    "type": "object",
+                    "properties": {}
+                  }
+                }
+              }
+            }
           },
           "createdAt": {
             "type": "string",

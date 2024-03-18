@@ -406,8 +406,12 @@ export interface ApiRideRide extends Schema.CollectionType {
     ride_status: Attribute.Enumeration<['Ongoing', 'Completed', 'Cancelled']>;
     payment_mode: Attribute.Enumeration<['Cash', 'Card']>;
     payment_status: Attribute.Enumeration<['paid', 'yet_to_pay']>;
-    servicePerson: Attribute.String;
-    customer: Attribute.String;
+    customer: Attribute.Relation<'api::ride.ride', 'oneToOne', 'admin::user'>;
+    service_person: Attribute.Relation<
+      'api::ride.ride',
+      'oneToOne',
+      'admin::user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -727,6 +731,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::ride.ride'
     >;
     phone: Attribute.BigInteger & Attribute.Unique;
+    income_expense: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
