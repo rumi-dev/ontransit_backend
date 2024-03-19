@@ -122,8 +122,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
         where: { id: user_id },
         populate: ["rides"],
       });
-
-    console.log(userRides);
+    if (userRides.length == 0) return [];
     let rideDetails = userRides[0].rides.map((ride) => {
       if (ride.ride_status == ride_status) {
         return ride;

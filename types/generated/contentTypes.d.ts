@@ -406,11 +406,15 @@ export interface ApiRideRide extends Schema.CollectionType {
     ride_status: Attribute.Enumeration<['Ongoing', 'Completed', 'Cancelled']>;
     payment_mode: Attribute.Enumeration<['Cash', 'Card']>;
     payment_status: Attribute.Enumeration<['paid', 'yet_to_pay']>;
-    customer: Attribute.Relation<'api::ride.ride', 'oneToOne', 'admin::user'>;
+    customer: Attribute.Relation<
+      'api::ride.ride',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     service_person: Attribute.Relation<
       'api::ride.ride',
       'oneToOne',
-      'admin::user'
+      'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
