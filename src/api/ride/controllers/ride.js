@@ -64,7 +64,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
     const { ride_status, pageNo } = ctx.request.body;
     let offset = pageNo * 10 - 10;
     const rides = await strapi.db.query("api::ride.ride").findMany({
-      limit: 10,
+      limit: 5,
       offset: offset,
       where: { ride_status: ride_status },
       orderBy: { id: "desc" },
@@ -117,7 +117,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
     let userRides = await strapi.db
       .query("plugin::users-permissions.user")
       .findMany({
-        limit: 10,
+        limit: 5,
         offset: offset,
         where: { id: user_id },
         populate: ["rides"],
