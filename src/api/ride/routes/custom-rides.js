@@ -48,5 +48,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/rideCreation",
+      handler: "ride.rideCreation",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };

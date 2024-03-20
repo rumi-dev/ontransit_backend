@@ -62,7 +62,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
   async bookingDetails(ctx) {
     // @ts-ignore
     const { ride_status, pageNo } = ctx.request.body;
-    let offset = pageNo * 10 - 10;
+    let offset = pageNo * 5 - 5;
     const rides = await strapi.db.query("api::ride.ride").findMany({
       limit: 5,
       offset: offset,
@@ -70,6 +70,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
       orderBy: { id: "desc" },
       populate: ["car"],
     });
+    if (rides.length == 0) return [];
     const users = Promise.all(
       rides.map(async (ride) => {
         let userRides = await strapi.db
@@ -85,13 +86,17 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
           rideId: ride.id,
           pickupPoint: ride.pickup_point,
           dropPoint: ride.drop_point,
-          servicePerson: driverName[0].username,
-          customerName: cusomterName[0].username,
+          servicePerson: driverName.length
+            ? driverName[0].username
+            : "Not Availabe",
+          customerName: cusomterName.length
+            ? cusomterName[0].username
+            : "Not Availabe",
           payment: ride.payment_status,
           paymentCost: ride.ride_cost,
           dateTime: ride.ride_datetime,
-          carType: ride.car.car_type,
-          vechicleNumber: ride.car.car_number,
+          carType: ride.car ? ride.car.car_type : "Not Available",
+          vechicleNumber: ride.car ? ride.car.car_number : "Not Available",
           status: ride.ride_status,
           otp: ride.ride_otp,
           paymentType: ride.ride_payment_mode,
@@ -113,7 +118,7 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
   async commonBookings(ctx) {
     // @ts-ignore
     const { ride_status, user_id, pageNo } = ctx.request.body;
-    let offset = pageNo * 10 - 10;
+    let offset = pageNo * 5 - 5;
     let userRides = await strapi.db
       .query("plugin::users-permissions.user")
       .findMany({
@@ -164,5 +169,40 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
       })
     );
     return customerRides;
+  },
+  async rideCreation(ctx) {
+    // @ts-ignore
+    const { rideData, user_id, driver_id } = ctx.request.body;
+    const entry = await strapi.db.query("api::ride.ride").create({
+      data: {
+        ...rideData,
+      },
+    });
+
+    const userData = await strapi.db
+      .query("plugin::users-permissions.user")
+      .findOne({ where: { id: user_id }, populate: ["rides"] });
+    const driverData = await strapi.db
+      .query("plugin::users-permissions.user")
+      .findOne({ where: { id: driver_id }, populate: ["rides"] });
+    console.log(driverData);
+    const usersEntry = await strapi.db
+      .query("plugin::users-permissions.user")
+      .update({
+        where: { id: user_id },
+        data: {
+          rides: [...userData.rides, entry],
+        },
+      });
+    const driverEntry = await strapi.db
+      .query("plugin::users-permissions.user")
+      .update({
+        where: { id: driver_id },
+        data: {
+          rides: [...driverData.rides, entry],
+        },
+      });
+    console.log(driverEntry);
+    return { message: "ride created", rideData: entry };
   },
 }));
