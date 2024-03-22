@@ -155,13 +155,17 @@ module.exports = createCoreController("api::ride.ride", ({ strapi }) => ({
           rideId: ride.id,
           pickupPoint: ride.pickup_point,
           dropPoint: ride.drop_point,
-          servicePerson: driverName[0].username,
-          customerName: cusomterName[0].username,
+          servicePerson: driverName.length
+            ? driverName[0].username
+            : "Not Availabe",
+          customerName: cusomterName.length
+            ? cusomterName[0].username
+            : "Not Availabe",
           payment: ride.payment_status,
           paymentCost: ride.ride_cost,
           dateTime: ride.ride_datetime,
-          carType: carDetails.car.car_type,
-          vechicleNumber: carDetails.car.car_number,
+          carType: ride.car ? ride.car.car_type : "Not Available",
+          vechicleNumber: ride.car ? ride.car.car_number : "Not Available",
           status: ride.ride_status,
           otp: ride.ride_otp,
           paymentType: ride.ride_payment_mode,

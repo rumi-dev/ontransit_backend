@@ -416,6 +416,7 @@ export interface ApiRideRide extends Schema.CollectionType {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+    otp_verified: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
