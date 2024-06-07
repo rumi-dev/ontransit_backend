@@ -97,12 +97,12 @@ module.exports = ({ env }) => ({
     connection: {
       host: env(
         "DATABASE_HOST",
-        "dpg-cmkd98la73kc73bl7f60-a.singapore-postgres.render.com"
+        "dpg-coft0mev3ddc739ps6kg-a.singapore-postgres.render.com"
       ),
       port: env.int("DATABASE_PORT", 5432),
-      database: env("DATABASE_NAME", "ontransitpostgressql"),
-      user: env("DATABASE_USERNAME", "ontransitpostgressql_user"),
-      password: env("DATABASE_PASSWORD", "PGoDPNMqpECqHhdFTmPGFvz2DYFAOqJZ"),
+      database: env("DATABASE_NAME", "ontrasnsit_postgres"),
+      user: env("DATABASE_USERNAME", "ontransit_user"),
+      password: env("DATABASE_PASSWORD", "iF0CeKHQkshmwSByA4wiDxqkTlggax8a"),
       schema: env("DATABASE_SCHEMA", "public"),
       ssl: {
         rejectUnauthorized: env.bool("DATABASE_SSL_SELF", false),
